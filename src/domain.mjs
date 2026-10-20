@@ -1,0 +1,6 @@
+export function phone(value){if(!value)return null;let s=String(value).trim().replace(/[ ()-]/g,'');if(s.startsWith('0'))s='+62'+s.slice(1);else if(!s.startsWith('+'))s='+'+s;if(!/^\+[1-9]\d{7,14}$/.test(s))throw Error('Nomor WhatsApp tidak valid');return s}
+export function average(values){const n=values.filter(x=>typeof x==='number'&&Number.isFinite(x));return n.length?n.reduce((a,b)=>a+b,0)/n.length:null}
+export function rubricScore(scores,rubric){if(!rubric.length||scores.length!==rubric.length)throw Error('Aspek belum lengkap');let a=0,b=0;rubric.forEach((r,i)=>{let x=scores[i],w=r.weight??1;if(typeof x!=='number'||!Number.isFinite(x)||x<0||x>r.max||r.max<=0||w<=0)throw Error('Skor tidak valid');a+=x*w;b+=r.max*w});return a/b*100}
+export const percent=(passed,total)=>total?100*passed/total:null;
+export function validateImport(rows,classId){if(!rows.length||rows.length>500)throw Error('Impor harus 1–500 siswa');const seen=new Set();return rows.map((r,i)=>{const nisn=String(r.nisn??'').trim(),name=String(r.name??'').trim();if(!/^\d{5,20}$/.test(nisn)||!name||name.length>150||seen.has(nisn))throw Error(`Baris ${i+2}: NISN/nama salah atau duplikat`);seen.add(nisn);return {nisn,name,class_id:classId,registered_phone:phone(r.registered_phone),phone_verified:false,active:true}})}
+export const safeCell=v=>/^[=+\-@\t\r]/.test(String(v??''))?"'"+v:v??'';

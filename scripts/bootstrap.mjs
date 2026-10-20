@@ -1,0 +1,9 @@
+import{createClient}from'@supabase/supabase-js';import{parseArgs}from'node:util';import{readFileSync}from'node:fs';
+// Private operator tool only. Credentials supplied in env, never on the command line.
+const {values}=parseArgs({options:{role:{type:'string',default:'teacher'},nisn:{type:'string'},name:{type:'string'}}});
+const role=values.role;if(!['teacher','student'].includes(role))throw Error('Role harus teacher/student');
+const email=process.env.BOOTSTRAP_EMAIL,password=process.env.BOOTSTRAP_PASSWORD;if(!email||!password||password.length<12||!values.name)throw Error('Isi BOOTSTRAP_EMAIL, BOOTSTRAP_PASSWORD (12+ karakter) dan --name. Jangan simpan di source.');
+const db=createClient(process.env.SUPABASE_URL,process.env.SUPABASE_SERVICE_ROLE_KEY,{auth:{persistSession:false}});
+let student;if(role==='student'){if(!values.nisn)throw Error('--nisn wajib');const r=await db.from('students').select('id,user_id').eq('nisn',values.nisn).single();if(r.error||r.data.user_id)throw Error('Siswa tidak ditemukan atau sudah punya akun');student=r.data}
+const {data,error}=await db.auth.admin.createUser({email,password,email_confirm:true});if(error)throw Error('Gagal membuat Auth user: '+error.message);const id=data.user.id;
+try{const r=await db.from('profiles').insert({id,name:values.name,role,active:true});if(r.error)throw r.error;if(student){const r=await db.from('students').update({user_id:id}).eq('id',student.id).is('user_id',null).select('id');if(r.error||r.data.length!==1)throw Error('Tautan siswa gagal')}console.log('Akun dibuat. UUID:',id)}catch{const cleanup=await db.from('profiles').delete().eq('id',id);const authCleanup=await db.auth.admin.deleteUser(id);if(cleanup.error||authCleanup.error)console.error('Kompensasi tidak tuntas. Periksa akun UUID',id);throw Error('Pembuatan profil gagal; periksa rekonsiliasi akun sebelum mencoba kembali.')}
