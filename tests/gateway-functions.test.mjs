@@ -1,0 +1,45 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import crypto from 'node:crypto';import {PGlite} from '@electric-sql/pglite';import {handleFunction} from '../server/gateway-functions.mjs';import {parseEvent} from '../server/webhook.mjs';
+const uid=()=>crypto.randomUUID();
+test('NISN linking confirmation, revalidation, own-data access, replay and grants',async t=>{
+ const db=new PGlite();await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to authenticated,anon,service_role;grant execute on function auth.uid() to authenticated,anon,service_role;`);
+ for(const name of (await fs.readdir(new URL('../supabase/migrations',import.meta.url))).sort())await db.exec(await fs.readFile(new URL('../supabase/migrations/'+name,import.meta.url),'utf8'));
+ const teacher=uid();await db.query('insert into auth.users values($1)',[teacher]);await db.query("insert into profiles(id,name,role) values($1,'Synthetic Teacher','teacher')",[teacher]);
+ const sid=uid(),sem=uid(),cls=uid(),phone='+6281234567890';await db.query("insert into semesters(id,name,active) values($1,'Synthetic period',true)",[sem]);await db.query("insert into classes(id,name) values($1,'Synthetic class')",[cls]);await db.query("insert into students(id,nisn,name,registered_phone,phone_verified) values($1,'0012345671','Synthetic Student',$2,true)",[sid,phone]);await db.query('insert into class_memberships values($1,$2,$3)',[sid,sem,cls]);
+ const run=async(action,arg='',p=phone,event=uid())=>(await db.query('select reev_gateway_function($1,$2,$3,$4) r',[event,p,action,arg])).rows[0].r;
+ await t.test('untrusted users cannot execute integration or read pending identities',async()=>{for(const role of ['anon','authenticated']){await db.exec('set role '+role);await assert.rejects(()=>run('register','0012345671'));await assert.rejects(()=>db.query('select * from gateway_link_pending'));await db.exec('reset role')}});
+ await db.exec('set role service_role');
+ await t.test('legacy student commands cannot bypass Gateway pricing',async()=>{const r=await db.query("select reev_gateway_legacy_teacher($1,$2,'.nilai') r",[uid(),phone]);assert.deepEqual(r.rows[0].r,{ignored:true})});
+ await t.test('NISN alone cannot claim identity and reveals no student name',async()=>{const r=await run('register','0012345671','+6289999999999');assert.equal(r.ok,false);assert.doesNotMatch(r.text,/Synthetic Student/);assert.equal((await db.query('select * from whatsapp_links')).rows.length,0)});
+ await t.test('preview retains leading zero; no link before YA; expired confirmation denied',async()=>{const r=await run('register','0012345671');assert.equal(r.pending,true);assert.match(r.text,/0012345671/);assert.equal((await db.query('select * from whatsapp_links')).rows.length,0);await db.query("update gateway_link_pending set expires_at=now()-interval '1 second'");assert.equal((await run('confirm')).ok,false)});
+ await t.test('teacher revocation during challenge blocks linking',async()=>{await run('register','0012345671');await db.query('update students set phone_verified=false where id=$1',[sid]);assert.equal((await run('confirm')).ok,false);await db.query('update students set phone_verified=true where id=$1',[sid])});
+ await t.test('confirmation writes existing relationship and website view; idempotent replay',async()=>{await run('register','0012345671');const id=uid();const r=await run('confirm','',phone,id);assert.equal(r.ok,true);assert.equal(r.pending,false);assert.deepEqual(await run('confirm','',phone,id),r);assert.equal((await db.query('select count(*) n from whatsapp_links')).rows[0].n,1);await db.exec('set role authenticated');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[teacher]);const row=(await db.query('select * from student_summary where id=$1',[sid])).rows[0];await db.exec('set role service_role');assert.equal(row.whatsapp_linked,true);assert.ok(row.whatsapp_linked_at);assert.equal((await run('confirm')).ok,false);await assert.rejects(()=>run('profile','',phone,id))});
+ // Reset only synthetic test rate history between independent access assertions.
+ await db.query('delete from gateway_function_events');
+ await t.test('each academic function returns only sender data; arguments and inactive access denied',async()=>{for(const action of ['profile','tasks','grades','stars','hearts','attendance']){const r=await run(action);assert.equal(r.ok,true);assert.match(r.text,/Synthetic Student/)}assert.equal((await run('grades','0012345672')).ok,false);assert.equal((await run('grades','','+6287777777777')).ok,false);await db.query('update students set active=false where id=$1',[sid]);assert.equal((await run('profile')).ok,false);await db.query('update students set active=true where id=$1',[sid])});
+ await t.test('cancel is scoped and administrative unlink invalidates pending challenge',async()=>{await run('register','0012345671');await run('cancel');assert.equal((await db.query('select * from gateway_link_pending')).rows.length,0);await run('register','0012345671');await db.query('delete from whatsapp_links where student_id=$1',[sid]);assert.equal((await db.query('select * from gateway_link_pending')).rows.length,0)});
+ await db.close();
+});
+test('signed function endpoint checks body, time, actions and disables legacy point bypass',async()=>{
+ const old=process.env.REEV_GATEWAY_FUNCTION_SECRET;process.env.REEV_GATEWAY_FUNCTION_SECRET='synthetic-test-secret-at-least-32-characters';
+ const event={id:'fixture-event',timestamp:new Date().toISOString(),phone:'+6281234567890',action:'profile',argument:''};
+ const request=(e=event,signature=true)=>{const body=JSON.stringify(e);return new Request('https://test.invalid/api/gateway-functions',{method:'POST',headers:{'x-reev-signature':signature?'sha256='+crypto.createHmac('sha256',process.env.REEV_GATEWAY_FUNCTION_SECRET).update(body).digest('hex'):'invalid'},body})};
+ let calls=0;const factory=()=>({rpc:async(name,args)=>{calls++;assert.equal(name,'reev_gateway_function');assert.equal(args.p_phone,event.phone);return {data:{ok:true,text:'Fixture'},error:null}}});
+ try{
+ assert.equal((await handleFunction(request(),factory)).status,200);assert.equal(calls,1);
+ assert.equal((await handleFunction(request(event,false),factory)).status,401);
+ assert.equal((await handleFunction(request({...event,timestamp:'2020-01-01'}),factory)).status,400);
+ assert.equal((await handleFunction(request({...event,action:'sql'}),factory)).status,400);
+ assert.equal((await handleFunction(new Request('https://test.invalid'),factory)).status,405);
+ assert.equal((await handleFunction(new Request('https://test.invalid',{method:'POST',body:'x'.repeat(9000)}),factory)).status,413);
+ assert.equal(calls,1);
+ }finally{if(old===undefined)delete process.env.REEV_GATEWAY_FUNCTION_SECRET;else process.env.REEV_GATEWAY_FUNCTION_SECRET=old;}
+});
+
+test('incremental 006 upgrade preserves existing NISN, grades and linked phone',async()=>{
+ const db=new PGlite();await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select null::uuid$$;`);
+ const dir=new URL('../supabase/migrations/',import.meta.url);for(const file of (await fs.readdir(dir)).sort().filter(n=>n<'006'))await db.exec(await fs.readFile(new URL(file,dir),'utf8'));
+ const sid=uid(),sem=uid(),cls=uid(),task=uid();await db.query("insert into semesters(id,name,active) values($1,'Before upgrade',true)",[sem]);await db.query("insert into classes(id,name) values($1,'Class fixture')",[cls]);await db.query("insert into students(id,nisn,name,registered_phone,phone_verified) values($1,'0012345671','Existing fixture','+6281234567890',true)",[sid]);await db.query('insert into class_memberships values($1,$2,$3)',[sid,sem,cls]);await db.query("insert into tasks(id,code,title,kind,class_id,semester_id,kktp,classical_target) values($1,'EXISTING','Existing','FORMATIF',$2,$3,73,80)",[task,cls,sem]);await db.query("insert into task_targets values($1,$2,'Dinilai')",[task,sid]);await db.query('insert into grades(task_id,student_id,score) values($1,$2,0)',[task,sid]);await db.query("insert into whatsapp_links values($1,'+6281234567890',now())",[sid]);
+ const before=(await db.query('select row_to_json(s) r from students s')).rows[0].r;
+ await db.exec(await fs.readFile(new URL('006_gateway_functions.sql',dir),'utf8'));
+ assert.deepEqual((await db.query('select row_to_json(s) r from students s')).rows[0].r,before);assert.equal(Number((await db.query('select score from grades')).rows[0].score),0);assert.equal((await db.query('select whatsapp_linked from student_summary')).rows[0].whatsapp_linked,true);assert.equal((await db.query('select count(*) n from whatsapp_links')).rows[0].n,1);await db.close();
+});

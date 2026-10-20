@@ -1,3 +1,7 @@
+# REEV Belajar v1.1.0
+
+Untuk upgrade project yang sudah berisi data, mulai dari **docs/UPGRADE_v1.1.0.md**. Jalankan hanya migrasi baru 006, bukan skema fresh-install.
+
 # REEV BELAJAR - Informatika v1.0.0
 
 Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0. Nama mapel dapat diubah di Pengaturan. Paket source baru, bukan update langsung database INPRO atau Gateway.

@@ -1,3 +1,5 @@
+> Untuk perubahan v1.1.0 dan integrasi menu custom Gateway, baca [UPGRADE_v1.1.0.md](UPGRADE_v1.1.0.md). Dokumen berikut mempertahankan panduan dasar v1.0.0.
+
 # Keputusan arsitektur dan audit — 13 Oktober 2026
 
 Website + API singkat: React/Vite dan Vercel. Identitas/data: Supabase Auth + PostgreSQL + RLS. Baileys: Gateway v2.7.3 di VPS atau Windows, satu socket per sesi. Alternatif seluruh website di VPS tetap memakai Supabase cloud. Mode Windows membutuhkan internet dan komputer menyala. Ini aplikasi satu mata pelajaran per project Supabase; seluruh guru aktif merupakan pengelola ruang tersebut. Untuk banyak mapel terisolasi, gunakan project terpisah; jangan menganggap aplikasi ini multi-tenant.

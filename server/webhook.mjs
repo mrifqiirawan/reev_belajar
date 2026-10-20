@@ -24,7 +24,8 @@ export async function processEvent(event,{send}={}){
  // Receipts may race the HTTP response; persist only monotone progress.
  await data(db.rpc('reev_receipt',{message_id:d.id,new_status:status}));}}
  return {ok:true};}
- await data(db.rpc('reev_bot',{event_key:parsed.key,phone:parsed.phone,message:parsed.message}));
+ const processed=await data(db.rpc(process.env.REEV_GATEWAY_FUNCTION_SECRET?'reev_gateway_legacy_teacher':'reev_bot',{event_key:parsed.key,phone:parsed.phone,message:parsed.message}));
+ if(processed?.ignored)return {ignored:true};
  const rows=await data(db.rpc('reev_claim_reply',{key:parsed.key}));if(!rows?.length)return {ok:true,duplicate:true};const row=rows[0];
  let status='unknown',gatewayId=null;
  try {const r=send?await send(row.phone,row.body):await gatewaySend(row.phone,row.body);gatewayId=r.messageId||r.id||null;status=r.success===false?'failed':['delivered','read','failed'].includes(r.status)?r.status:'sent'}catch{/* Timeout ambiguous: no automatic retry. */}

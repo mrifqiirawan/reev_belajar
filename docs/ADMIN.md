@@ -1,3 +1,5 @@
+> Untuk perubahan v1.1.0 dan integrasi menu custom Gateway, baca [UPGRADE_v1.1.0.md](UPGRADE_v1.1.0.md). Dokumen berikut mempertahankan panduan dasar v1.0.0.
+
 # Panduan guru dan siswa
 
 ## Urutan awal
