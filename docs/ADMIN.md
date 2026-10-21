@@ -50,3 +50,6 @@ Bot menampilkan pratinjau dan token. Balas `KONFIRMASI <token>` dalam lima menit
 Guru mengelola seluruh ruang mapel ini. Siswa hanya datanya sendiri. Penonaktifan profil memblokir akses RLS; siswa aktif juga diperlukan untuk WA. Tombol ↪ Keluar mengakhiri sesi perangkat saat ini melalui Supabase dan membersihkan tampilan; bukan klaim mencabut seluruh access token seketika di semua perangkat.
 
 Pengaturan menampilkan waktu status Gateway, perintah, outbox dan audit terbaru. Periksa waktu: connected lama bukan jaminan terkoneksi sekarang. queued/sending/sent bukan delivered/read. Respons yang ambigu tidak dikirim ulang otomatis. UI memakai pagination; angka dashboard berasal dari seluruh semester, bukan hanya halaman tabel atau filter kelas di tabel bawah.
+
+## Pengelolaan asesmen v1.2.0
+Pilih kartu pada Tugas dan Nilai, lalu Edit asesmen atau Hapus asesmen. Penghapusan membutuhkan kode dan turut menghapus nilai dari rekap. Lihat UPGRADE_v1.2.0.md untuk batas edit dan semester arsip.

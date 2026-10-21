@@ -23,3 +23,12 @@
 | Windows | run.bat launch.mjs | NOT_RUN | Source tersedia; perangkat Windows belum diuji |
 | Backup restore | Prosedur pg_dump DATA_DIR dan staging | NOT_RUN | Tanpa environment hosted untuk restore |
 | Performa dua detik | Query terbatas dan aggregate DB | NOT_RUN | Belum benchmark hosted |
+
+## Tambahan v1.2.0
+
+| Kebutuhan | Implementasi | Bukti |
+|---|---|---|
+| Edit asesmen | Dialog guru dan RPC reev_manage_task | Tes database PASS |
+| Hapus asesmen dan nilai | Konfirmasi kode, transaksi, audit | Tes database PASS |
+| Identitas pembuat | Login, footer, Pengaturan | Source + build PASS; visual browser NOT_RUN |
+| Upgrade data lama | Migrasi 007 | Fixture data 001–006 dipertahankan PASS |

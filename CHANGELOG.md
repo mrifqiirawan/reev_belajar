@@ -1,3 +1,10 @@
+# v1.2.0 — 21 Oktober 2026
+- Edit/hapus asesmen formatif dan sumatif untuk guru/admin.
+- Validasi server, revisi untuk mencegah penimpaan edit, konfirmasi kode saat menghapus.
+- Pertahankan audit penghapusan nilai; kunci struktur penilaian setelah ada nilai.
+- Kredit pembuat: M. Rifqi Irawan, S.Pd. pada login, footer dan Pengaturan.
+- Migrasi incremental 007; fitur lama dipertahankan.
+
 # v1.1.0 — 19 Oktober 2026
 
 - Endpoint HMAC khusus fungsi Gateway, deduplikasi dan pembatasan akses siswa.

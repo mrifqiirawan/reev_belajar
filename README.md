@@ -1,8 +1,9 @@
-# REEV Belajar v1.1.0
+# REEV BELAJAR v1.2.0
 
-Untuk upgrade project yang sudah berisi data, mulai dari **docs/UPGRADE_v1.1.0.md**. Jalankan hanya migrasi baru 006, bukan skema fresh-install.
+Pembuat aplikasi: **M. Rifqi Irawan, S.Pd.**
 
-# REEV BELAJAR - Informatika v1.0.0
+**Upgrade dari v1.1.0:** ikuti docs/UPGRADE_v1.2.0.md; jalankan hanya migrasi baru 007_task_management.sql, lalu deploy ulang source.
+
 
 Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0. Nama mapel dapat diubah di Pengaturan. Paket source baru, bukan update langsung database INPRO atau Gateway.
 
@@ -10,7 +11,7 @@ Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0.
 
 ## Mulai di sini
 
-1. Baca `docs/DEPLOY.md`: buat project Supabase baru, terapkan lima migrasi berurutan, matikan signup publik, bootstrap guru.
+1. Baca `docs/DEPLOY.md`: buat project Supabase baru, terapkan migrasi 001–007 berurutan, matikan signup publik, bootstrap guru.
 2. Salin `.env.example` ke `.env` dan isi nilai lokal. Jangan mengirim secret melalui chat atau commit.
 3. Node >=22.12 <25; jalankan `npm ci`, `npm run lint`, `npm test`, `npm run build`.
 4. Windows: klik `run.bat`. Linux/macOS: `npm start`, lalu http://localhost:3001. Vercel memakai source + `api`, build output `dist`.
