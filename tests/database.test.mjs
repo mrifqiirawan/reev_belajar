@@ -1,7 +1,7 @@
 import test from'node:test';import assert from'node:assert/strict';import fs from'node:fs/promises';import{PGlite}from'@electric-sql/pglite';import crypto from'node:crypto';
 const uid=()=>crypto.randomUUID();
 test('PostgreSQL migrations, RLS, transactions and WhatsApp',async t=>{const db=new PGlite();await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to authenticated,anon,service_role;grant execute on function auth.uid() to authenticated,anon,service_role;`);
-for(const name of (await fs.readdir(new URL('../supabase/migrations',import.meta.url))).sort().filter(n=>n!=='007_task_management.sql'))await db.exec(await fs.readFile(new URL('../supabase/migrations/'+name,import.meta.url),'utf8'));
+for(const name of (await fs.readdir(new URL('../supabase/migrations',import.meta.url))).sort().filter(n=>n<'007'))await db.exec(await fs.readFile(new URL('../supabase/migrations/'+name,import.meta.url),'utf8'));
 const teacher=uid(),userA=uid(),userB=uid(),studentA=uid(),studentB=uid(),sem=uid(),cls=uid(),task=uid();
 await db.query(`insert into auth.users values ($1),($2),($3)`,[teacher,userA,userB]);await db.query(`insert into profiles(id,name,role) values($1,'Guru Uji','teacher'),($2,'Siswa A','student'),($3,'Siswa B','student')`,[teacher,userA,userB]);
 async function role(r,id=''){await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role '+r)}

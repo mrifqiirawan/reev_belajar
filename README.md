@@ -1,10 +1,14 @@
-# REEV BELAJAR v1.2.1
+# REEV BELAJAR v1.3.0
+
+**Revisi CSV (tetap v1.3.0):** NISN/telepon wajib berkutip, NISN 10 digit, alias PHONE_REGISTERED diterima, ekspor berkutip. Baca `docs/CSV_SISWA.md`. Tidak ada migrasi tambahan setelah 008.
 
 Pembuat aplikasi: **M. Rifqi Irawan, S.Pd.**
 
-**Upgrade dari v1.2.0:** baca `docs/UPGRADE_v1.2.1.md`. Cukup deploy ulang source; tidak ada SQL baru dan jangan menjalankan ulang migrasi lama.
+**Upgrade dari v1.2.0/v1.2.1:** jalankan hanya `supabase/migrations/008_student_gradebook.sql`, kemudian deploy source v1.3.0. Panduan: `docs/UPGRADE_v1.3.0.md`. Jangan reset database atau menjalankan ulang migrasi lama.
 
-**Upgrade dari v1.1.0:** ikuti docs/UPGRADE_v1.2.0.md; jalankan hanya migrasi baru 007_task_management.sql, lalu deploy ulang source.
+**Dari v1.1.0:** terapkan 007 dahulu, kemudian 008. Instalasi database kosong memakai 001–008 berurutan.
+
+**Fitur baru:** Rekap Nilai → Isi semua tugas per siswa, urutan nama A–Z, ketuntasan formatif berdasarkan kelengkapan nilai, dan perbaikan Edit Pengaturan.
 
 
 Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0. Nama mapel dapat diubah di Pengaturan. Paket source baru, bukan update langsung database INPRO atau Gateway.
@@ -13,7 +17,7 @@ Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0.
 
 ## Mulai di sini
 
-1. Baca `docs/DEPLOY.md`: buat project Supabase baru, terapkan migrasi 001–007 berurutan, matikan signup publik, bootstrap guru.
+1. Baca `docs/DEPLOY.md`: buat project Supabase baru, terapkan migrasi 001–008 berurutan, matikan signup publik, bootstrap guru.
 2. Salin `.env.example` ke `.env` dan isi nilai lokal. Jangan mengirim secret melalui chat atau commit.
 3. Node >=22.12 <25; jalankan `npm ci`, `npm run lint`, `npm test`, `npm run build`.
 4. Windows: klik `run.bat`. Linux/macOS: `npm start`, lalu http://localhost:3001. Vercel memakai source + `api`, build output `dist`.
@@ -31,6 +35,6 @@ Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0.
 
 ## Status rilis
 
-Source, migration, build dan pengujian lokal disertakan. **Belum dideploy atau diuji dengan Supabase hosted/WhatsApp nyata.** Detail bukti dan batas ada di `docs/TEST_RESULTS_v1.2.1.md`. Ini bukan klaim siap produksi tanpa konfigurasi dan uji penerimaan lingkungan Anda.
+Source, migration, build dan pengujian lokal disertakan. **Belum dideploy atau diuji dengan Supabase hosted/WhatsApp nyata.** Detail bukti dan batas ada di `docs/TEST_RESULTS_v1.3.0.md`. Ini bukan klaim siap produksi tanpa konfigurasi dan uji penerimaan lingkungan Anda.
 
 Batas eksplisit: input batch maksimum 200 siswa; impor CSV 500 siswa; satu mapel per database; perintah nilai WhatsApp hanya formatif, sumatif diisi melalui rubrik website; bootstrap akun lewat skrip operator privat; Gateway tidak disertakan ulang karena ZIP referensi tidak memiliki LICENSE. Tidak ada data siswa asli, secret, sesi WA, atau password bawaan dalam paket.

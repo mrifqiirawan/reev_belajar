@@ -1,3 +1,21 @@
+# Revisi CSV — tetap v1.3.0
+
+- Validasi sintaks kutip ganda pada NISN dan telepon terisi sebelum pratinjau impor.
+- NISN impor wajib 10 digit; angka notasi ilmiah/rumus ditolak tanpa menebak nol yang hilang.
+- Alias PHONE_REGISTERED, header case-insensitive, BOM, koma/titik koma didukung.
+- Tombol template CSV, ekspor dengan seluruh field berkutip, input file dapat dipilih ulang setelah error.
+- Panduan Excel Text/CSV dan keterbatasan kutip CSV di docs/CSV_SISWA.md.
+- Tidak mengubah versi aplikasi, data, atau migrasi SQL.
+
+# v1.3.0 — 26 Oktober 2026
+
+- Rekap Nilai: tombol Isi semua tugas per siswa, urutan pembuatan paling awal sampai terbaru, formatif dan aspek sumatif, preview /100 dan umpan balik.
+- Simpan lintas tugas atomik, idempotensi retry, validasi sasaran/semester/role, serta pemeriksaan nilai dan revisi tugas agar perubahan sesi lain tidak tertimpa.
+- Nama siswa di direktori, dashboard, rekap, daftar nilai tugas, kehadiran dan ekspor diurutkan A–Z tanpa membedakan huruf besar/kecil dan spasi tepi. Pengurutan dilakukan sebelum batas/pagination.
+- Ketuntasan formatif: seluruh tugas formatif yang ditugaskan pada siswa di semester terpilih harus sudah Dinilai dengan skor non-null, dan rata-rata memenuhi KKTP kelas/default. Progres dinilai/total ditampilkan; dashboard memakai syarat yang sama.
+- Edit Pengaturan: ID boolean singleton tidak dikonversi menjadi UUID; payload UI hanya memuat field yang dapat diubah.
+- Migrasi incremental 008 diperlukan, tidak menghapus atau mengubah nilai lama. Dependency tetap.
+
 # v1.2.1 — 26 Oktober 2026
 
 - Memperbaiki skor yang hilang saat status masih Belum/Selesai: input skor/aspek otomatis memilih Dinilai.

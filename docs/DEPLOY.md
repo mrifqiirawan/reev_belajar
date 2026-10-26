@@ -9,7 +9,7 @@ Node.js >=22.12.0 <25 (pengujian paket memakai 24.19.0), npm dengan dukungan loc
 ## 2. Supabase
 
 1. Buat project baru. Tidak ada perintah drop/reset database lama dalam paket ini.
-2. Jalankan `supabase/migrations/001_core.sql` sampai `005_indexes.sql` secara berurutan melalui SQL Editor atau migration runner Anda. Setiap berkas memakai transaksi. Untuk project baru saja; jangan jalankan ulang 001 pada database operasional.
+2. Jalankan `supabase/migrations/001_core.sql` sampai `008_student_gradebook.sql` secara berurutan melalui SQL Editor atau migration runner Anda. Setiap berkas memakai transaksi. Untuk project baru saja; jangan jalankan ulang 001 pada database operasional.
 3. Di Authentication, matikan Allow new users to sign up. Aktifkan pengendalian rate limit login yang disediakan Supabase; pembatasan client saja tidak cukup. Atur Site URL dan redirect URL sesuai deployment.
 4. Isi `.env` dari `.env.example`. `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` adalah konfigurasi browser publik. `SUPABASE_SERVICE_ROLE_KEY`, `GATEWAY_API_KEY`, dan `WEBHOOK_SECRET` hanya server. Gunakan legacy anon key atau publishable key yang didukung project pada variabel anon. Jangan memakai service key sebagai anon.
 5. Buat guru pertama melalui skrip privat di terminal operator. Tambahkan sementara `BOOTSTRAP_EMAIL` dan `BOOTSTRAP_PASSWORD` ke `.env` privat, password minimal 12 karakter, lalu:

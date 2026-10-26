@@ -53,3 +53,9 @@ Pengaturan menampilkan waktu status Gateway, perintah, outbox dan audit terbaru.
 
 ## Pengelolaan asesmen v1.2.0
 Pilih kartu pada Tugas dan Nilai, lalu Edit asesmen atau Hapus asesmen. Penghapusan membutuhkan kode dan turut menghapus nilai dari rekap. Lihat UPGRADE_v1.2.0.md untuk batas edit dan semester arsip.
+
+## Rekap dan pengaturan v1.3.0
+Pada Rekap Nilai, klik Isi semua tugas di baris siswa untuk mengisi semua tugas formatif/sumatif yang ditugaskan kepadanya dalam semester terpilih. Simpan semua perubahan, lalu tutup dialog untuk melihat rekap terbaru. Semua tugas formatif wajib dinilai dan rata-rata mencapai KKTP agar status Tuntas. Progres dinilai/total ada di kolom ketuntasan. Nama siswa diurutkan A–Z tanpa membedakan kapital/spasi tepi. Edit Pengaturan memerlukan migrasi 008 agar ID boolean tidak dibaca sebagai UUID. Panduan lengkap: UPGRADE_v1.3.0.md.
+
+## Revisi CSV pada versi 1.3.0
+NISN (10 digit) dan telepon terisi wajib diapit tanda kutip ganda pada file CSV mentah. Header PHONE_REGISTERED diterima. Baca CSV_SISWA.md untuk contoh dan cara menjaga nol awal saat memakai Excel. Jika 008 sudah berhasil diterapkan, revisi CSV hanya memerlukan deploy ulang source tanpa menjalankan SQL lagi.

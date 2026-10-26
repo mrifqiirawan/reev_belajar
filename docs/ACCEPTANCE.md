@@ -38,3 +38,16 @@
 - Nilai nol, pratinjau normalisasi, feedback-only, aspek kosong: PASS.
 - Build dan semua 37 tes: PASS.
 - Verifikasi browser dan deploy hosted: NOT_RUN; checklist di UPGRADE_v1.2.1.md.
+
+## v1.3.0
+| Permintaan | Implementasi | Verifikasi |
+|---|---|---|
+| Input semua tugas per siswa | Tombol Isi semua tugas; dialog formatif/sumatif; RPC transaksi | PASS lokal |
+| Nama A–Z | Pengurutan nama ternormalisasi sebelum limit/pagination | PASS SQL |
+| Ketuntasan saat nilai belum lengkap | formative_total / formative_graded + rata-rata KKTP | PASS lokal |
+| Error Pengaturan UUID true | Handler mengecualikan ID settings dari konversi UUID + payload whitelist | PASS regresi |
+| Data lama aman | Migrasi 008 tanpa mutasi baris data | PASS perbandingan sebelum/sesudah |
+| UI interaktif hosted | Checklist UPGRADE_v1.3.0.md | NOT_RUN |
+
+## Revisi CSV v1.3.0
+Validasi kutip NISN/telepon, NISN 10 digit, alias header, ekspor berkutip: PASS unit/regresi. Penggunaan langsung Excel dan browser: NOT_RUN. Panduan: CSV_SISWA.md.
