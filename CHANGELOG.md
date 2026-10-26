@@ -1,3 +1,12 @@
+# v1.2.1 — 26 Oktober 2026
+
+- Memperbaiki skor yang hilang saat status masih Belum/Selesai: input skor/aspek otomatis memilih Dinilai.
+- Pratinjau Nilai / 100 untuk formatif dan sumatif mengikuti draft dan normalisasi skor.
+- Aspek kosong tidak diubah menjadi nol; batch tidak valid ditolak dengan nama siswa.
+- Umpan balik saja mempertahankan nilai yang tersimpan; nilai nol tetap sah.
+- Input dinonaktifkan saat memuat/menyimpan dan pada semester arsip.
+- Tidak ada perubahan SQL/dependensi. Tes regresi meliputi payload frontend sampai tabel nilai, riwayat, dan rekap.
+
 # v1.2.0 — 21 Oktober 2026
 - Edit/hapus asesmen formatif dan sumatif untuk guru/admin.
 - Validasi server, revisi untuk mencegah penimpaan edit, konfirmasi kode saat menghapus.

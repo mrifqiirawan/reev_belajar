@@ -1,6 +1,8 @@
-# REEV BELAJAR v1.2.0
+# REEV BELAJAR v1.2.1
 
 Pembuat aplikasi: **M. Rifqi Irawan, S.Pd.**
+
+**Upgrade dari v1.2.0:** baca `docs/UPGRADE_v1.2.1.md`. Cukup deploy ulang source; tidak ada SQL baru dan jangan menjalankan ulang migrasi lama.
 
 **Upgrade dari v1.1.0:** ikuti docs/UPGRADE_v1.2.0.md; jalankan hanya migrasi baru 007_task_management.sql, lalu deploy ulang source.
 
@@ -29,6 +31,6 @@ Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0.
 
 ## Status rilis
 
-Source, migration, build dan pengujian lokal disertakan. **Belum dideploy atau diuji dengan Supabase hosted/WhatsApp nyata.** Detail bukti dan batas ada di `docs/TEST_RESULTS.md`. Ini bukan klaim siap produksi tanpa konfigurasi dan uji penerimaan lingkungan Anda.
+Source, migration, build dan pengujian lokal disertakan. **Belum dideploy atau diuji dengan Supabase hosted/WhatsApp nyata.** Detail bukti dan batas ada di `docs/TEST_RESULTS_v1.2.1.md`. Ini bukan klaim siap produksi tanpa konfigurasi dan uji penerimaan lingkungan Anda.
 
 Batas eksplisit: input batch maksimum 200 siswa; impor CSV 500 siswa; satu mapel per database; perintah nilai WhatsApp hanya formatif, sumatif diisi melalui rubrik website; bootstrap akun lewat skrip operator privat; Gateway tidak disertakan ulang karena ZIP referensi tidak memiliki LICENSE. Tidak ada data siswa asli, secret, sesi WA, atau password bawaan dalam paket.

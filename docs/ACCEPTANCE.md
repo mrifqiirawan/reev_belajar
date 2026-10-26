@@ -32,3 +32,9 @@
 | Hapus asesmen dan nilai | Konfirmasi kode, transaksi, audit | Tes database PASS |
 | Identitas pembuat | Login, footer, Pengaturan | Source + build PASS; visual browser NOT_RUN |
 | Upgrade data lama | Migrasi 007 | Fixture data 001–006 dipertahankan PASS |
+
+## Tambahan v1.2.1
+- Input skor → status Dinilai → payload RPC → nilai tersimpan, history old/new dan rekap: PASS pada tes lokal.
+- Nilai nol, pratinjau normalisasi, feedback-only, aspek kosong: PASS.
+- Build dan semua 37 tes: PASS.
+- Verifikasi browser dan deploy hosted: NOT_RUN; checklist di UPGRADE_v1.2.1.md.

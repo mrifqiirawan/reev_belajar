@@ -8,7 +8,7 @@
 2. Tambahkan semester, centang aktif. Hanya satu semester aktif. Arsip semester menghentikan input nilai/kehadiran pada periode itu.
 3. Tambahkan kelas; KKTP kosong memakai default sekolah. Tambahkan siswa atau impor CSV pada kelas yang telah dipilih.
 4. Buat tugas formatif/sumatif. Anggota kelas saat pembuatan menjadi sasaran. Kode tugas unik dan tetap; rubrik tidak diubah setelah dibuat.
-5. Input nilai: pilih asesmen, isi skor/aspek, pilih Dinilai, simpan batch. Status Belum/Selesai menyimpan nilai kosong. Nilai 0 sah dan dihitung. Feedback menyertai koreksi pada audit.
+5. Input nilai: pilih asesmen, isi skor/aspek (status otomatis Dinilai), periksa pratinjau Nilai / 100, lalu simpan batch. Semua aspek sumatif wajib lengkap. Status Belum/Selesai menyimpan nilai kosong. Nilai 0 sah dan dihitung. Feedback menyertai koreksi pada audit.
 6. Buat pertemuan dan catat Hadir/Sakit/Izin/Alpa; data kosong berarti belum dicatat. Tombol semua Hadir hanya memengaruhi anggota yang ditampilkan; tinjau sebelum simpan.
 7. Bintang diberikan dengan alasan. Pembatalan mencatat transaksi negatif satu kali, tidak menghapus record.
 8. Pelanggaran mengurangi satu hati. Pilih Dalam proses/Selesai/Dibatalkan dan catatan tindakan. Untuk pulih saat Selesai, aktifkan aturan pemulihan dan centang konfirmasi. Dibatalkan mengembalikan pengurangan melalui transaksi koreksi.
