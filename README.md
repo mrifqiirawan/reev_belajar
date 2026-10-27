@@ -1,4 +1,8 @@
-# REEV BELAJAR v1.4.0
+# REEV BELAJAR v1.5.0
+
+Reset sandi siswa tersedia untuk guru aktif pada **Siswa dan Kelas → Reset sandi**. Konfirmasi NISN sebelum sandi dikembalikan ke 123456. Baca **docs/UPGRADE_v1.5.0.md** untuk environment Vercel. Tidak ada migrasi tambahan dari v1.4.0.
+
+# Dasar fitur v1.4.0
 
 **Upgrade dari v1.3.0:** terapkan hanya migrasi `009_student_accounts.sql`, jalankan `npm run provision:students`, lalu deploy source baru. Panduan lengkap: **docs/UPGRADE_v1.4.0.md**.
 

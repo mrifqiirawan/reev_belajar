@@ -1,3 +1,9 @@
+# v1.5.0 · 27 Oktober 2026
+
+- Reset sandi siswa dari menu Siswa dan Kelas dengan konfirmasi NISN.
+- Endpoint Vercel/VM memverifikasi JWT dan role teacher aktif, serta menolak target akun guru.
+- Audit tanpa password dan penanganan kegagalan Auth/audit.
+
 # v1.4.0 · 27 Oktober 2026
 
 - Aktivasi akun siswa aktif massal melalui Supabase Auth Admin, sandi awal 123456.
