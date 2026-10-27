@@ -1,3 +1,7 @@
+# Akun siswa v1.4.0
+
+Setelah input/import siswa, jalankan `npm run provision:students` dari komputer pengelola dengan environment privat. Akun baru login menggunakan NISN dan sandi awal 123456. Siswa mengganti sandi di Pengaturan. Akun yang sudah tertaut tidak direset. Baca `UPGRADE_v1.4.0.md` sebelum menjalankan aktivasi.
+
 > Untuk perubahan v1.1.0 dan integrasi menu custom Gateway, baca [UPGRADE_v1.1.0.md](UPGRADE_v1.1.0.md). Dokumen berikut mempertahankan panduan dasar v1.0.0.
 
 # Panduan guru dan siswa

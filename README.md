@@ -1,15 +1,10 @@
-# REEV BELAJAR v1.3.0
+# REEV BELAJAR v1.4.0
 
-**Revisi CSV (tetap v1.3.0):** NISN/telepon wajib berkutip, NISN 10 digit, alias PHONE_REGISTERED diterima, ekspor berkutip. Baca `docs/CSV_SISWA.md`. Tidak ada migrasi tambahan setelah 008.
+**Upgrade dari v1.3.0:** terapkan hanya migrasi `009_student_accounts.sql`, jalankan `npm run provision:students`, lalu deploy source baru. Panduan lengkap: **docs/UPGRADE_v1.4.0.md**.
+
+**Fitur baru:** login NISN untuk akun siswa baru, sandi awal `123456`, aktivasi siswa massal yang dapat dilanjutkan, dan Pengaturan → Ganti sandi. Akun lama tetap menggunakan email/sandi sebelumnya. Jalankan aktivasi lagi setelah menambah atau mengimpor siswa.
 
 Pembuat aplikasi: **M. Rifqi Irawan, S.Pd.**
-
-**Upgrade dari v1.2.0/v1.2.1:** jalankan hanya `supabase/migrations/008_student_gradebook.sql`, kemudian deploy source v1.3.0. Panduan: `docs/UPGRADE_v1.3.0.md`. Jangan reset database atau menjalankan ulang migrasi lama.
-
-**Dari v1.1.0:** terapkan 007 dahulu, kemudian 008. Instalasi database kosong memakai 001–008 berurutan.
-
-**Fitur baru:** Rekap Nilai → Isi semua tugas per siswa, urutan nama A–Z, ketuntasan formatif berdasarkan kelengkapan nilai, dan perbaikan Edit Pengaturan.
-
 
 Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0. Nama mapel dapat diubah di Pengaturan. Paket source baru, bukan update langsung database INPRO atau Gateway.
 
@@ -17,7 +12,7 @@ Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0.
 
 ## Mulai di sini
 
-1. Baca `docs/DEPLOY.md`: buat project Supabase baru, terapkan migrasi 001–008 berurutan, matikan signup publik, bootstrap guru.
+1. Baca `docs/DEPLOY.md`: buat project Supabase baru, terapkan migrasi 001–009 berurutan, matikan signup publik, bootstrap guru.
 2. Salin `.env.example` ke `.env` dan isi nilai lokal. Jangan mengirim secret melalui chat atau commit.
 3. Node >=22.12 <25; jalankan `npm ci`, `npm run lint`, `npm test`, `npm run build`.
 4. Windows: klik `run.bat`. Linux/macOS: `npm start`, lalu http://localhost:3001. Vercel memakai source + `api`, build output `dist`.

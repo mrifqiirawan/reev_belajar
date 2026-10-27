@@ -38,10 +38,10 @@ test('feedback-only retains saved score; explicit ungrading clears score; blank 
 test('regression: UI payload to SQL persists score, history and reports across rereads',async()=>{
  const db=new PGlite();
  try {
- await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to authenticated,anon,service_role;grant execute on function auth.uid() to authenticated,anon,service_role;`);
+ await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key,email text,raw_app_meta_data jsonb default '{}');create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to authenticated,anon,service_role;grant execute on function auth.uid() to authenticated,anon,service_role;`);
  for(const file of (await fs.readdir(new URL('../supabase/migrations/',import.meta.url))).sort())await db.exec(await fs.readFile(new URL('../supabase/migrations/'+file,import.meta.url),'utf8'));
  const teacher=uid(),student=uid(),cls=uid(),sem=uid(),task=uid();
- await db.query('insert into auth.users values ($1)',[teacher]);
+ await db.query('insert into auth.users(id) values ($1)',[teacher]);
  await db.query("insert into profiles(id,name,role) values($1,'Guru Uji','teacher')",[teacher]);
  await db.query("select set_config('request.jwt.claim.sub',$1,false)",[teacher]);await db.exec('set role authenticated');
  const mutate=async(op,p,id=uid())=>db.query('select reev_mutate($1,$2,$3)',[op,JSON.stringify(p),id]);

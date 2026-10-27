@@ -1,3 +1,12 @@
+# v1.4.0 · 27 Oktober 2026
+
+- Aktivasi akun siswa aktif massal melalui Supabase Auth Admin, sandi awal 123456.
+- Login NISN dengan nol awal tetap utuh; login email lama tetap tersedia.
+- Menu Pengaturan siswa dan formulir ganti sandi dengan konfirmasi.
+- Penautan profil/siswa atomik, rekonsiliasi setelah timeout, tanpa reset akun tertaut.
+- Migrasi tambahan 009 dan pelindung perubahan NISN identitas login.
+- Panduan upgrade serta pengujian Auth helper, provisioning, dan RLS.
+
 # Revisi CSV — tetap v1.3.0
 
 - Validasi sintaks kutip ganda pada NISN dan telepon terisi sebelum pratinjau impor.

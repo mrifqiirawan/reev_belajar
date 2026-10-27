@@ -1,3 +1,7 @@
+# Catatan rilis v1.4.0
+
+Untuk upgrade database v1.3.0, ikuti `UPGRADE_v1.4.0.md`: jalankan hanya migrasi 009, aktivasi akun siswa, lalu deploy. Instalasi database kosong memakai 001–009. Petunjuk versi lama di bawah perlu ditambah migrasi 009 dan aktivasi akun tersebut.
+
 > Untuk perubahan v1.1.0 dan integrasi menu custom Gateway, baca [UPGRADE_v1.1.0.md](UPGRADE_v1.1.0.md). Dokumen berikut mempertahankan panduan dasar v1.0.0.
 
 # Instalasi, operasi dan pemulihan
