@@ -1,3 +1,11 @@
+# v1.6.0 — 28 Oktober 2026
+
+- Koreksi NISN siswa aktif melalui API guru dengan sinkronisasi Auth dan audit atomik.
+- Hapus akun login siswa dari Siswa dan Kelas, konfirmasi NISN, nonaktifkan siswa dan lepas WA; riwayat belajar dipertahankan.
+- Akun & akses hanya mengambil profil guru.
+- Migrasi incremental 010, endpoint Vercel/lokal, serta tes izin, rollback, duplikasi dan pemulihan respons hilang.
+- Panduan upgrade dan batas pengujian hosted disertakan.
+
 # v1.5.0 · 27 Oktober 2026
 
 - Reset sandi siswa dari menu Siswa dan Kelas dengan konfirmasi NISN.

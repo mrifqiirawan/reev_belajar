@@ -1,3 +1,5 @@
+> **v1.6.0:** baca [UPGRADE_v1.6.0.md](UPGRADE_v1.6.0.md) untuk koreksi NISN, penghapusan akun, migrasi 010, dan panduan terbaru. Untuk instalasi baru jalankan 001–010; upgrade dari v1.5.0 hanya 010.
+
 # Akun siswa v1.4.0
 
 Setelah input/import siswa, jalankan `npm run provision:students` dari komputer pengelola dengan environment privat. Akun baru login menggunakan NISN dan sandi awal 123456. Siswa mengganti sandi di Pengaturan. Akun yang sudah tertaut tidak direset. Baca `UPGRADE_v1.4.0.md` sebelum menjalankan aktivasi.

@@ -1,3 +1,5 @@
+> **v1.6.0:** baca [UPGRADE_v1.6.0.md](UPGRADE_v1.6.0.md) untuk koreksi NISN, penghapusan akun, migrasi 010, dan panduan terbaru. Untuk instalasi baru jalankan 001–010; upgrade dari v1.5.0 hanya 010.
+
 # Catatan rilis v1.4.0
 
 Untuk upgrade database v1.3.0, ikuti `UPGRADE_v1.4.0.md`: jalankan hanya migrasi 009, aktivasi akun siswa, lalu deploy. Instalasi database kosong memakai 001–009. Petunjuk versi lama di bawah perlu ditambah migrasi 009 dan aktivasi akun tersebut.

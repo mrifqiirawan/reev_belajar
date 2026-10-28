@@ -1,4 +1,10 @@
-# REEV BELAJAR v1.5.0
+# REEV BELAJAR v1.6.0
+
+**Upgrade dari v1.5.0:** jalankan hanya migrasi `010_student_account_management.sql`, lalu deploy seluruh source v1.6.0. Baca **docs/UPGRADE_v1.6.0.md** terlebih dahulu.
+
+Fitur baru: koreksi NISN beserta identitas login, hapus akun siswa dengan konfirmasi (riwayat belajar tetap), dan daftar Akun & akses khusus Guru Operator.
+
+## Fitur sebelumnya
 
 Reset sandi siswa tersedia untuk guru aktif pada **Siswa dan Kelas → Reset sandi**. Konfirmasi NISN sebelum sandi dikembalikan ke 123456. Baca **docs/UPGRADE_v1.5.0.md** untuk environment Vercel. Tidak ada migrasi tambahan dari v1.4.0.
 
@@ -16,7 +22,7 @@ Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0.
 
 ## Mulai di sini
 
-1. Baca `docs/DEPLOY.md`: buat project Supabase baru, terapkan migrasi 001–009 berurutan, matikan signup publik, bootstrap guru.
+1. Baca `docs/DEPLOY.md`: buat project Supabase baru, terapkan migrasi 001–010 berurutan, matikan signup publik, bootstrap guru.
 2. Salin `.env.example` ke `.env` dan isi nilai lokal. Jangan mengirim secret melalui chat atau commit.
 3. Node >=22.12 <25; jalankan `npm ci`, `npm run lint`, `npm test`, `npm run build`.
 4. Windows: klik `run.bat`. Linux/macOS: `npm start`, lalu http://localhost:3001. Vercel memakai source + `api`, build output `dist`.
@@ -34,6 +40,6 @@ Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0.
 
 ## Status rilis
 
-Source, migration, build dan pengujian lokal disertakan. **Belum dideploy atau diuji dengan Supabase hosted/WhatsApp nyata.** Detail bukti dan batas ada di `docs/TEST_RESULTS_v1.3.0.md`. Ini bukan klaim siap produksi tanpa konfigurasi dan uji penerimaan lingkungan Anda.
+Source, migration, build dan pengujian lokal disertakan. **Belum dideploy atau diuji dengan Supabase hosted/WhatsApp nyata.** Detail bukti dan batas ada di `docs/TEST_RESULTS_v1.6.0.md`. Ini bukan klaim siap produksi tanpa konfigurasi dan uji penerimaan lingkungan Anda.
 
-Batas eksplisit: input batch maksimum 200 siswa; impor CSV 500 siswa; satu mapel per database; perintah nilai WhatsApp hanya formatif, sumatif diisi melalui rubrik website; bootstrap akun lewat skrip operator privat; Gateway tidak disertakan ulang karena ZIP referensi tidak memiliki LICENSE. Tidak ada data siswa asli, secret, sesi WA, atau password bawaan dalam paket.
+Batas eksplisit: input batch maksimum 200 siswa; impor CSV 500 siswa; satu mapel per database; perintah nilai WhatsApp hanya formatif, sumatif diisi melalui rubrik website; bootstrap akun lewat skrip operator privat; Gateway tidak disertakan ulang karena ZIP referensi tidak memiliki LICENSE. Tidak ada data siswa asli, secret operasional, atau sesi WA dalam paket. Mekanisme provisioning/reset siswa tetap menggunakan sandi awal 123456 seperti versi sebelumnya; siswa perlu menggantinya.
