@@ -1,45 +1,33 @@
-# REEV BELAJAR v1.6.0
+# REEV BELAJAR v1.7.0
 
-**Upgrade dari v1.5.0:** jalankan hanya migrasi `010_student_account_management.sql`, lalu deploy seluruh source v1.6.0. Baca **docs/UPGRADE_v1.6.0.md** terlebih dahulu.
+Paket upgrade dari v1.6.0 untuk pengelolaan siswa, NISN WhatsApp dan peserta tugas otomatis.
 
-Fitur baru: koreksi NISN beserta identitas login, hapus akun siswa dengan konfirmasi (riwayat belajar tetap), dan daftar Akun & akses khusus Guru Operator.
+## Mulai upgrade
 
-## Fitur sebelumnya
+1. Backup database aplikasi dan Auth, lalu baca **docs/UPGRADE_v1.7.0.md**.
+2. Database dengan migrasi 001–010: jalankan **hanya `supabase/migrations/011_student_lifecycle.sql`**. Dari v1.5.0: jalankan 010 lalu 011. Instalasi baru memakai 001–011 berurutan.
+3. Deploy seluruh source ke Vercel, termasuk `api/` dan `server/`; build `npm run build`, output `dist`. Environment sebelumnya tetap digunakan.
+4. Muat ulang browser dan pastikan endpoint Gateway Functions mengarah ke deployment baru serta project Supabase yang sama.
 
-Reset sandi siswa tersedia untuk guru aktif pada **Siswa dan Kelas → Reset sandi**. Konfirmasi NISN sebelum sandi dikembalikan ke 123456. Baca **docs/UPGRADE_v1.5.0.md** untuk environment Vercel. Tidak ada migrasi tambahan dari v1.4.0.
+## Perubahan
 
-# Dasar fitur v1.4.0
+- **Hapus siswa permanen:** akun Auth/profil, siswa dan data belajarnya di seluruh semester benar-benar dihapus; siswa hilang dari direktori. Konfirmasi NISN dan checkbox wajib. Catatan audit administrasi tetap disimpan.
+- **NISN WhatsApp:** respons/konfirmasi lama dibatalkan setelah koreksi; pendaftaran memakai NISN terbaru, dengan pesan status nomor/akun yang lebih jelas.
+- **Peserta tugas otomatis:** siswa aktif yang ditambahkan lewat formulir/CSV mendapat tugas formatif/sumatif kelas dan semester yang belum diarsipkan. Migrasi memperbaiki peserta lama yang terlewat tanpa menimpa nilai.
+- Pengaturan → Akun & akses tetap khusus Guru Operator.
 
-**Upgrade dari v1.3.0:** terapkan hanya migrasi `009_student_accounts.sql`, jalankan `npm run provision:students`, lalu deploy source baru. Panduan lengkap: **docs/UPGRADE_v1.4.0.md**.
+**Peringatan perubahan perilaku:** untuk menonaktifkan tanpa kehilangan nilai, gunakan Edit → Aktif. Tombol Hapus siswa menghapus data belajar permanen. Penghapusan v1.6.0 yang sekadar menonaktifkan tidak otomatis dijalankan ulang oleh migrasi.
 
-**Fitur baru:** login NISN untuk akun siswa baru, sandi awal `123456`, aktivasi siswa massal yang dapat dilanjutkan, dan Pengaturan → Ganti sandi. Akun lama tetap menggunakan email/sandi sebelumnya. Jalankan aktivasi lagi setelah menambah atau mengimpor siswa.
+## Menjalankan dan memeriksa
+
+Node >=22.12 <25. Jalankan `npm ci`, `npm run lint`, `npm test`, `npm run build`. Isi `.env` dari `.env.example` melalui konfigurasi privat; `npm start` menjalankan server lokal. Jangan memasukkan service key ke variabel `VITE_`. Nilai VITE harus sudah tersedia saat build agar aplikasi lengkap dibundel.
+
+Framework React/Vite, Supabase Auth/PostgreSQL/RLS dan integrasi Gateway yang sudah ada dipertahankan. Gateway/Baileys tetap berjalan terpisah dari Vercel functions. Source Gateway eksternal tidak disertakan atau dimodifikasi oleh paket ini.
+
+Panduan: `docs/DEPLOY.md`, `docs/ADMIN.md`, `docs/UPGRADE_v1.7.0.md`. Bukti dan batas uji terbaru: **docs/TEST_RESULTS_v1.7.0.md**. Laporan/upgrade versi sebelumnya bersifat historis.
+
+Build dan 84 tes lokal lulus. **Belum dideploy, diuji pada Supabase hosted, atau diuji melalui WhatsApp nyata.** Pesan dari Gateway aktif pengguna tetap perlu dicocokkan dengan endpoint dan konfigurasi pada checklist upgrade.
+
+Batas lama tetap: satu mata pelajaran per database, batch nilai 200 siswa, impor CSV 500 siswa, provisioning akun melalui skrip pengelola. Reset/provisioning siswa tetap memakai sandi awal 123456 sesuai source sebelumnya; siswa perlu menggantinya. Tidak ada data siswa asli, secret operasional atau sesi WA dalam paket.
 
 Pembuat aplikasi: **M. Rifqi Irawan, S.Pd.**
-
-Aplikasi satu mata pelajaran untuk guru dan siswa sesuai PRD REEV BELAJAR 1.0.0. Nama mapel dapat diubah di Pengaturan. Paket source baru, bukan update langsung database INPRO atau Gateway.
-
-**Arsitektur:** React/Vite di Vercel; Supabase Auth/PostgreSQL/RLS; Gateway Baileys v2.7.3 tetap hidup di VPS/Windows. Baileys tidak dijalankan di function serverless.
-
-## Mulai di sini
-
-1. Baca `docs/DEPLOY.md`: buat project Supabase baru, terapkan migrasi 001–010 berurutan, matikan signup publik, bootstrap guru.
-2. Salin `.env.example` ke `.env` dan isi nilai lokal. Jangan mengirim secret melalui chat atau commit.
-3. Node >=22.12 <25; jalankan `npm ci`, `npm run lint`, `npm test`, `npm run build`.
-4. Windows: klik `run.bat`. Linux/macOS: `npm start`, lalu http://localhost:3001. Vercel memakai source + `api`, build output `dist`.
-5. Login → Pengaturan → semester aktif + aturan hati → kelas → siswa/CSV → tugas → input nilai/kehadiran.
-6. Pilih **salah satu** integrasi WA: webhook HTTPS untuk hybrid, atau adapter langsung pada Gateway untuk lokal. Baca panduan sebelum menautkan akun.
-
-## Isi paket
-
-- `src/`: tujuh menu responsif, login guru/siswa, terang/gelap, formulir, impor/ekspor CSV, batch nilai/kehadiran.
-- `supabase/migrations/`: skema, RLS, transaksi, audit, chatbot dan receipt.
-- `server/`, `api/`: API webhook tervalidasi, server lokal, adapter in-process.
-- `scripts/`: bootstrap akun, pemasangan adapter, launcher Windows dan pemeriksaan source.
-- `tests/`: rumus, keamanan event, transaksi dan RLS pada PostgreSQL embedded.
-- `docs/`: audit, arsitektur, panduan admin, pemasangan dan matriks penerimaan.
-
-## Status rilis
-
-Source, migration, build dan pengujian lokal disertakan. **Belum dideploy atau diuji dengan Supabase hosted/WhatsApp nyata.** Detail bukti dan batas ada di `docs/TEST_RESULTS_v1.6.0.md`. Ini bukan klaim siap produksi tanpa konfigurasi dan uji penerimaan lingkungan Anda.
-
-Batas eksplisit: input batch maksimum 200 siswa; impor CSV 500 siswa; satu mapel per database; perintah nilai WhatsApp hanya formatif, sumatif diisi melalui rubrik website; bootstrap akun lewat skrip operator privat; Gateway tidak disertakan ulang karena ZIP referensi tidak memiliki LICENSE. Tidak ada data siswa asli, secret operasional, atau sesi WA dalam paket. Mekanisme provisioning/reset siswa tetap menggunakan sandi awal 123456 seperti versi sebelumnya; siswa perlu menggantinya.

@@ -1,3 +1,5 @@
+> **Versi terbaru v1.7.0:** ikuti [UPGRADE_v1.7.0.md](UPGRADE_v1.7.0.md). Hapus siswa kini permanen di seluruh semester; migrasi 011 wajib. Keterangan versi lama di bawah adalah referensi historis bila bertentangan.
+
 > **v1.6.0:** baca [UPGRADE_v1.6.0.md](UPGRADE_v1.6.0.md) untuk koreksi NISN, penghapusan akun, migrasi 010, dan panduan terbaru. Untuk instalasi baru jalankan 001–010; upgrade dari v1.5.0 hanya 010.
 
 # Akun siswa v1.4.0

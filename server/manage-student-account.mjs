@@ -9,7 +9,7 @@ export async function manageStudentAccount(db,token,body){
  if(actor?.role!=='teacher'||!actor.active)throw fail(403,'Akses Guru Operator aktif diperlukan.');
  const {studentId,operation,expectedNisn,newNisn}=body||{};
  if(typeof studentId!=='string'||! /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(studentId)
- ||!['nisn','delete'].includes(operation)||typeof expectedNisn!=='string'||! /^[0-9]{5,20}$/.test(expectedNisn)
+ ||!['nisn','purge'].includes(operation)||typeof expectedNisn!=='string'||! /^[0-9]{5,20}$/.test(expectedNisn)
  ||(operation==='nisn'&&(typeof newNisn!=='string'||! /^[0-9]{10}$/.test(newNisn))))throw fail(400,'Identitas siswa atau NISN tidak valid. NISN baru wajib 10 digit.');
  const prepared=await db.rpc('reev_prepare_student_account',{actor_id:auth.user.id,student_id:studentId,operation,expected_nisn:expectedNisn,new_nisn:operation==='nisn'?newNisn:null});
  if(prepared.error)throw fail(409,prepared.error.code==='23505'?'NISN sudah digunakan.':prepared.error.message);
@@ -23,7 +23,7 @@ export async function manageStudentAccount(db,token,body){
   const verified=await db.rpc('reev_prepare_student_account',{actor_id:auth.user.id,student_id:studentId,operation,expected_nisn:expectedNisn,new_nisn:operation==='nisn'?newNisn:null});
   if(verified.error||!verified.data?.done)throw fail(502,'Perubahan belum terkonfirmasi di data siswa. Muat ulang halaman dan periksa sinkronisasi Auth.');
  }
- return {ok:true,message:operation==='nisn'?'NISN dan identitas login berhasil diperbarui. Gunakan NISN baru dengan sandi yang sama.':'Akun login dihapus dan siswa dinonaktifkan. Nilai serta riwayat belajar tetap disimpan.'};
+ return {ok:true,message:operation==='nisn'?'NISN dan identitas login berhasil diperbarui. Gunakan NISN baru dengan sandi yang sama.':'Akun, data siswa, nilai, kehadiran dan riwayat belajar telah dihapus permanen.'};
 }
 export default async function handler(req,res){
  res.setHeader('Cache-Control','no-store');res.setHeader('Content-Type','application/json');

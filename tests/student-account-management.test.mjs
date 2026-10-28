@@ -128,7 +128,7 @@ test('API uses official Auth operations, preserves password, and verifies synchr
  assert.equal((await manageStudentAccount(db,'token',body)).ok,true);
  assert.deepEqual(calls,[{id:accountId,attrs:{email:'0098765432@siswa.reev.invalid',email_confirm:true}}]);
  await manageStudentAccount(db,'token',body);assert.equal(calls.length,1);
- done=false;await manageStudentAccount(db,'token',{...body,operation:'delete'});assert.deepEqual(calls[1],{deleted:accountId});
+ done=false;await manageStudentAccount(db,'token',{...body,operation:'purge'});assert.deepEqual(calls[1],{deleted:accountId});
  done=false;authFailure=true;await assert.rejects(()=>manageStudentAccount(db,'token',body),e=>e.status===502);
  done=false;authFailure=false;verifyFailure=true;await assert.rejects(()=>manageStudentAccount(db,'token',body),e=>e.status===502);
 });

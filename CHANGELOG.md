@@ -1,3 +1,11 @@
+# v1.7.0 — 28 Oktober 2026
+
+- Hapus siswa permanen di seluruh semester, termasuk Auth/profil dan relasi belajar; konfirmasi NISN + checkbox. Audit administrasi tetap disimpan.
+- Operasi API baru `purge` mencegah klien v1.6.0 menghapus permanen memakai dialog lama. Retry aman dan stale Edit tidak menghidupkan kembali UUID terhapus.
+- Koreksi NISN membatalkan payload Gateway/konfirmasi lama; register memakai nomor terdaftar dan NISN terkini, dengan diagnosis akses tanpa membocorkan identitas ke nomor lain.
+- Formulir, CSV, aktivasi kembali dan perpindahan kelas menambahkan peserta tugas yang sesuai; migrasi memperbaiki target lama yang hilang tanpa menimpa nilai/arsip.
+- Migrasi 011, tes lifecycle end-to-end SQL dan checklist Gateway/deployment ditambahkan.
+
 # v1.6.0 — 28 Oktober 2026
 
 - Koreksi NISN siswa aktif melalui API guru dengan sinkronisasi Auth dan audit atomik.

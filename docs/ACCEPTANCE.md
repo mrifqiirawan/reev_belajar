@@ -1,3 +1,5 @@
+> **Versi terbaru v1.7.0:** ikuti [UPGRADE_v1.7.0.md](UPGRADE_v1.7.0.md). Hapus siswa kini permanen di seluruh semester; migrasi 011 wajib. Keterangan versi lama di bawah adalah referensi historis bila bertentangan.
+
 # Matriks penerimaan
 
 | requirement | implementation | status | evidence_or_limit |
