@@ -43,11 +43,9 @@ export function parseStudentCSV(input,classId){
  });
  return validateImport(rows,classId);
 }
-export const studentCSVTemplate='"nisn","name","registered_phone"\r\n';
-// CSV quoting protects syntax; it does not declare an Excel cell's type.
-// Excel mode emits ONLY validated identifiers as constant-string expressions.
-// Arbitrary user input must never be interpolated into a formula.
-export function exportStudentCSV(rows,{excel=false}={}){
+export const studentCSVTemplate='nisn,name,registered_phone\r\n';
+// Identifiers remain strings. CSV quotes protect syntax, not spreadsheet cell types.
+export function exportStudentCSV(rows){
  const data=rows.map(row=>Object.fromEntries(Object.entries(row).map(([key,value])=>{
   if(key==='nisn'||key==='registered_phone'){
    if(value==null||value==='')return [key,''];
@@ -57,13 +55,16 @@ export function exportStudentCSV(rows,{excel=false}={}){
    if(!valid)throw Error('Ekspor dibatalkan: NISN/telepon tidak valid. Periksa data sumber.');
    // Standard format keeps the historical digits-only international phone.
    const identifier=key==='registered_phone'?text.replace(/^\+/, ''):text;
-   return [key,excel?'="'+identifier+'"':identifier];
+   return [key,identifier];
   }
   return [key,safeCell(value)];
  })));
- return Papa.unparse(data,{quotes:true,newline:'\r\n'});
+ const fields=data.length?Object.keys(data[0]):['nisn','name','class_name','registered_phone','formative','summative','stars','hearts'];
+ const header=Papa.unparse([fields],{newline:'\r\n'});
+ const body=Papa.unparse(data.map(row=>fields.map(key=>row[key])),{quotes:(value,index)=>value!==''&&value!=null&&['nisn','registered_phone'].includes(fields[index]),newline:'\r\n'});
+ return header+(body?'\r\n'+body:'\r\n');
 }
-export function studentCSVDownload(rows,{excel=false}={}){
- return {filename:excel?'rekap-siswa-excel.csv':'rekap-siswa.csv',
-  content:'\ufeff'+exportStudentCSV(rows,{excel}),mime:'text/csv;charset=utf-8'};
+export function studentCSVDownload(rows){
+ return {filename:'rekap-siswa.csv',
+  content:'\ufeff'+exportStudentCSV(rows),mime:'text/csv;charset=utf-8'};
 }

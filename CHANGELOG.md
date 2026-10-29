@@ -1,3 +1,10 @@
+# v1.7.2 — 29 Oktober 2026
+
+- Satukan ekspor menjadi Unduh CSV; pindahkan template dan unggah ke bagian Impor CSV.
+- Kutip wajib hanya NISN/telepon terisi; escaping otomatis untuk karakter khusus pada kolom lain.
+- Hapus ekspresi teks Excel. Perbarui header template, petunjuk impor, tes round-trip dan format mentah.
+- Tidak ada perubahan SQL atau dependency.
+
 # v1.7.1 — 29 Oktober 2026
 
 - Tambah CSV untuk Excel dengan identifier sebagai ekspresi teks konstan dari digit tervalidasi; CSV standar bertanda kutip tetap tersedia.

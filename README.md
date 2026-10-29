@@ -1,6 +1,6 @@
-# REEV BELAJAR v1.7.1
+# REEV BELAJAR v1.7.2
 
-**Patch ekspor CSV dari v1.7.0:** tersedia CSV untuk Excel dan CSV standar bertanda kutip. Baca `docs/UPGRADE_v1.7.1.md`. Tidak ada migrasi SQL baru; cukup deploy source baru.
+**Revisi CSV:** satu tombol Unduh CSV; kutip wajib hanya pada NISN dan telepon terisi. Nama/kolom lain hanya dikutip bila sintaks CSV memerlukannya. Template dan unggah tersedia dalam bagian Impor CSV. Baca `docs/UPGRADE_v1.7.2.md`. Tidak ada migrasi SQL baru; cukup deploy source baru.
 
 Bagian upgrade v1.6.0 → v1.7.0 di bawah tetap berlaku hanya jika migrasi 011 belum terpasang.
 
@@ -26,7 +26,7 @@ Node >=22.12 <25. Jalankan `npm ci`, `npm run lint`, `npm test`, `npm run build`
 
 Framework React/Vite, Supabase Auth/PostgreSQL/RLS dan integrasi Gateway yang sudah ada dipertahankan. Gateway/Baileys tetap berjalan terpisah dari Vercel functions. Source Gateway eksternal tidak disertakan atau dimodifikasi oleh paket ini.
 
-Panduan: `docs/DEPLOY.md`, `docs/ADMIN.md`, `docs/UPGRADE_v1.7.0.md`. Bukti dan batas uji terbaru: **docs/TEST_RESULTS_v1.7.1.md**. Laporan/upgrade versi sebelumnya bersifat historis.
+Panduan: `docs/DEPLOY.md`, `docs/ADMIN.md`, `docs/UPGRADE_v1.7.0.md`. Bukti dan batas uji terbaru: **docs/TEST_RESULTS_v1.7.2.md**. Laporan/upgrade versi sebelumnya bersifat historis.
 
 Build dan 87 tes lokal lulus. **Belum dideploy, diuji pada Supabase hosted, atau diuji melalui WhatsApp nyata.** Pesan dari Gateway aktif pengguna tetap perlu dicocokkan dengan endpoint dan konfigurasi pada checklist upgrade.
 

@@ -1,13 +1,11 @@
-> Ekspor v1.7.1: baca [UPGRADE_v1.7.1.md](UPGRADE_v1.7.1.md). CSV untuk Excel bukan file impor siswa; gunakan Template CSV untuk impor.
-
-# Impor CSV siswa — revisi v1.3.0
+# Impor CSV siswa — v1.7.2
 
 Format file mentah yang diterima (contoh sintetis, ganti dengan data Anda):
 
 ```csv
-"nisn","name","registered_phone"
-"0123123123","Nama Siswa","6285399809980"
-"0012345678","Siswa Tanpa Telepon",""
+nisn,name,registered_phone
+"0123123123",Nama Siswa,"6285399809980"
+"0012345678",Siswa Tanpa Telepon,
 ```
 
 ## Ketentuan
@@ -31,10 +29,10 @@ CSV tidak menyimpan tipe kolom. Tanda kutip ganda adalah pembatas nilai CSV, buk
 4. Pastikan nilai mentah terlihat persis seperti `"0123123123"` dan `"6285399809980"`. Tambahkan pembatas kutip melalui editor teks bila Excel tidak menyertakannya. Jangan mengetik kutip literal ke dalam sel Excel: hasil ekspornya dapat menjadi tiga kutip dan akan ditolak sebagai angka tidak valid.
 5. Pastikan NISN masih 10 digit sebelum mengimpor ke aplikasi. Jika sudah berubah menjadi 9 digit atau notasi ilmiah, kembalikan dari sumber asli, jangan menebak.
 
-Tombol **Template CSV** mengunduh header kosong. Contoh di atas dapat disalin ke editor teks dan diganti dengan data nyata, lalu disimpan sebagai UTF-8 CSV. Format header template harus dipertahankan.
+Buka bagian **Impor CSV**, lalu tombol **Template CSV** mengunduh header kosong. Contoh di atas dapat disalin ke editor teks dan diganti dengan data nyata, lalu disimpan sebagai UTF-8 CSV. Format header template harus dipertahankan.
 
 ## Ekspor dan pemasangan
 
-Ekspor CSV aplikasi sekarang memberi kutip pada seluruh kolom; nomor telepon diekspor sebagai digit tanpa tanda + untuk menghindari interpretasi rumus spreadsheet. Ekspor rekap tetap memuat kolom rekap tambahan, sehingga bukan template impor siswa langsung. Jika akan diimpor, sisakan tiga kolom resmi dan pastikan siswa tersebut belum ada.
+Unduh CSV memberi kutip wajib hanya pada NISN dan telepon terisi. Header, nama biasa, kelas, dan nilai tidak diapit kutip; koma, kutip, atau baris baru di dalam nilai tetap memerlukan escaping CSV. Tidak ada mode rumus Excel; nomor telepon diekspor sebagai digit tanpa tanda + untuk menghindari interpretasi rumus spreadsheet. Ekspor rekap tetap memuat kolom rekap tambahan, sehingga bukan template impor siswa langsung. Jika akan diimpor, sisakan tiga kolom resmi dan pastikan siswa tersebut belum ada.
 
-Versi aplikasi tetap 1.3.0. Tidak ada perubahan SQL pada revisi CSV. Jika migrasi 008 sudah terpasang, cukup deploy ulang source revisi ini. Jika baru upgrade dari 1.2.x, jalankan 008 sekali sesuai UPGRADE_v1.3.0.md, lalu deploy source. Jangan menjalankan 008 lagi jika sudah berhasil diterapkan.
+Dari v1.7.0/v1.7.1, cukup deploy source v1.7.2 tanpa migrasi SQL. Lihat UPGRADE_v1.7.2.md.
