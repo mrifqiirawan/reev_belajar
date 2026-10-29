@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import {validateImport} from './domain.mjs';
+import {validateImport,safeCell} from './domain.mjs';
 
 // Preserve CSV syntax metadata: Papa supplies decoded strings but not quote flags.
 function quotedFields(text, delimiter) {
@@ -44,7 +44,26 @@ export function parseStudentCSV(input,classId){
  return validateImport(rows,classId);
 }
 export const studentCSVTemplate='"nisn","name","registered_phone"\r\n';
-export function exportStudentCSV(rows){
- // Phone is normalized internally; export digits to avoid spreadsheet formulas.
- return Papa.unparse(rows.map(row=>({...row,registered_phone:String(row.registered_phone??'').replace(/^\+/, '')})),{quotes:true,newline:'\r\n'});
+// CSV quoting protects syntax; it does not declare an Excel cell's type.
+// Excel mode emits ONLY validated identifiers as constant-string expressions.
+// Arbitrary user input must never be interpolated into a formula.
+export function exportStudentCSV(rows,{excel=false}={}){
+ const data=rows.map(row=>Object.fromEntries(Object.entries(row).map(([key,value])=>{
+  if(key==='nisn'||key==='registered_phone'){
+   if(value==null||value==='')return [key,''];
+   if(typeof value!=='string')throw Error('Ekspor dibatalkan: NISN/telepon harus berupa teks. Periksa data sumber.');
+   const text=value.trim();
+   const valid=key==='nisn'?/^[0-9]{5,20}$/.test(text):/^\+?[0-9]{7,15}$/.test(text);
+   if(!valid)throw Error('Ekspor dibatalkan: NISN/telepon tidak valid. Periksa data sumber.');
+   // Standard format keeps the historical digits-only international phone.
+   const identifier=key==='registered_phone'?text.replace(/^\+/, ''):text;
+   return [key,excel?'="'+identifier+'"':identifier];
+  }
+  return [key,safeCell(value)];
+ })));
+ return Papa.unparse(data,{quotes:true,newline:'\r\n'});
+}
+export function studentCSVDownload(rows,{excel=false}={}){
+ return {filename:excel?'rekap-siswa-excel.csv':'rekap-siswa.csv',
+  content:'\ufeff'+exportStudentCSV(rows,{excel}),mime:'text/csv;charset=utf-8'};
 }

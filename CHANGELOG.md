@@ -1,3 +1,10 @@
+# v1.7.1 — 29 Oktober 2026
+
+- Tambah CSV untuk Excel dengan identifier sebagai ekspresi teks konstan dari digit tervalidasi; CSV standar bertanda kutip tetap tersedia.
+- Satukan format byte unduhan UTF-8 BOM, CRLF, nama file dan validasi identifier.
+- Tambah petunjuk bahwa quote CSV tidak memaksa tipe sel Excel; pertahankan format telepon internasional sebelumnya.
+- Tanpa perubahan SQL/database/dependency.
+
 # v1.7.0 — 28 Oktober 2026
 
 - Hapus siswa permanen di seluruh semester, termasuk Auth/profil dan relasi belajar; konfirmasi NISN + checkbox. Audit administrasi tetap disimpan.

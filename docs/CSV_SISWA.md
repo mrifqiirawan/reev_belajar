@@ -1,3 +1,5 @@
+> Ekspor v1.7.1: baca [UPGRADE_v1.7.1.md](UPGRADE_v1.7.1.md). CSV untuk Excel bukan file impor siswa; gunakan Template CSV untuk impor.
+
 # Impor CSV siswa — revisi v1.3.0
 
 Format file mentah yang diterima (contoh sintetis, ganti dengan data Anda):
