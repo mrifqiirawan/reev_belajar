@@ -1,3 +1,10 @@
+# v1.7.3 — 29 Oktober 2026
+
+- NISN dan telepon ekspor memuat kutip literal sebagai isi sel; tanpa awalan = atau rumus Excel.
+- Impor menerima pasangan kutip literal dari ekspor serta format lama, membersihkannya sebelum validasi dan penyimpanan.
+- Pertahankan satu tombol Unduh CSV, nilai kosong/nol, filter dan nomor sumber.
+- Tanpa perubahan SQL/dependency.
+
 # v1.7.2 — 29 Oktober 2026
 
 - Satukan ekspor menjadi Unduh CSV; pindahkan template dan unggah ke bagian Impor CSV.

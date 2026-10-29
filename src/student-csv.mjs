@@ -37,6 +37,10 @@ export function parseStudentCSV(input,classId){
   for(const field of ['nisn','registered_phone']){
    if(row[field]&&!quotes[headers.indexOf(field)])throw Error('Baris data '+line+': '+field+' wajib diapit tanda kutip ganda, contoh "'+(field==='nisn'?'0123123123':'6285399809980')+'"');
   }
+  // Accept one literal quote pair from our export, without accepting formulas.
+  for(const field of ['nisn','registered_phone']){
+   if(/^"[+0-9]+"$/.test(row[field]))row[field]=row[field].slice(1,-1);
+  }
   if(!/^\d{10}$/.test(row.nisn))throw Error('Baris data '+line+': NISN wajib 10 digit teks. Periksa nol awal pada sumber; aplikasi tidak menambahkan nol secara otomatis');
   if(row.registered_phone&&!/^\+?\d+$/.test(row.registered_phone))throw Error('Baris data '+line+': nomor telepon wajib digit teks, bukan rumus atau notasi ilmiah');
   return row;
@@ -44,7 +48,8 @@ export function parseStudentCSV(input,classId){
  return validateImport(rows,classId);
 }
 export const studentCSVTemplate='nisn,name,registered_phone\r\n';
-// Identifiers remain strings. CSV quotes protect syntax, not spreadsheet cell types.
+// Literal quotes are part of the identifier cell; Papa escapes them as CSV triple quotes.
+// No formula or equals prefix is emitted. Import removes exactly one valid quote pair.
 export function exportStudentCSV(rows){
  const data=rows.map(row=>Object.fromEntries(Object.entries(row).map(([key,value])=>{
   if(key==='nisn'||key==='registered_phone'){
@@ -55,7 +60,7 @@ export function exportStudentCSV(rows){
    if(!valid)throw Error('Ekspor dibatalkan: NISN/telepon tidak valid. Periksa data sumber.');
    // Standard format keeps the historical digits-only international phone.
    const identifier=key==='registered_phone'?text.replace(/^\+/, ''):text;
-   return [key,identifier];
+   return [key,'"'+identifier+'"'];
   }
   return [key,safeCell(value)];
  })));
